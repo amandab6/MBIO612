@@ -1,0 +1,196 @@
+### Question 0
+
+*  Draw a concepts diagram that uses all the following Github terminology 
+   * Include any missing keywords that will simplify the concepts diagrams 
+
+
+`Push`, `Repository`, `Clone`, `Pull`, `Pull Request`, `Branch`, `Merging`, `Github Client`, `README file`, `Private or Public`
+
+```{r}
+# Add your photo here
+https://drive.google.com/file/d/1A1x-xynrE4IM46lqo1tGgDFvsFRSUcsl/view?usp=drive_link 
+```
+
+#### Question 1
+
+`matrix(c(1,2,3,4,5,6) , nrow = 3)`
+
+* Running the expression produces the following matrix
+
+|  |  |
+|---|---|
+| 1 | 4 |
+| 2 | 5 |
+| 3 | 6 |
+
+* How can you modify the call to `matrix()` to produce the following matrix instead?
+
+|   | col_1 |  col_2 |
+| --- |---|---|
+| row_1 | 1 | 2 |
+| row_2 | 3 | 4 |
+| row_3 | 5 | 6 |
+
+* Note that you need to name the columns (col_1 and col_2) and name the rows (row_1, row_2, row_3)
+
+Hint: Use the `?` symbol to invoke the matrix documentation
+
+```{r}
+# Add your code here
+practical_2_matrix<- matrix(c(1,3,5,2,4,6) , nrow = 3)
+colnames(practical_2_matrix)<- c("col_1", "col_2")
+rownames(practical_2_matrix)<- c("row_1", "row_2", "row_3")
+practical_2_matrix
+```
+
+
+#### Question 2
+
+* Load then sort the airquality data frame on its `Temp` and `Solar.R` columns in reverse order (largest to smallest values)
+  * The function to sort a data frame is called order
+* Display only the first 15 lines of your table
+
+```{r}
+data(airquality)
+head(airquality)
+#create temp and solar vectors in order to perform the order function (becuase it has to be a vector)
+temp_vector<- airquality[ , c("Temp")]
+solar_vector<- airquality[ , c("Solar.R")]
+#reverse sort temp and solar vectors 
+temp_sorted<- temp_vector[order(-temp_vector)]
+solar_sorted<- solar_vector[order(-solar_vector)]
+#bind sorted temp and solar vectors into a data frame
+sorted_df<- data.frame(temp_sorted, solar_sorted)
+#display only first 15 lines of new data frame
+head(sorted_df,15)
+
+#retry this following example from class (different from above)
+data(airquality)
+head(airquality)
+
+df_temp<- airquality[order(-airquality$Temp), ]
+df_solar<- airquality[order(-airquality$Solar.R), ]
+decreasing_df<- data.frame(df_temp, df_solar)
+head(decreasing_df, 15)
+```
+
+#### Question 3
+
+* Sort the airquality data frame on its `Temp` in decreasing order and `Solar.R` in increasing order
+* Display only the first 15 lines of your table
+
+```{r}
+#write your answer here
+data(airquality)
+head(airquality)
+#create temp and solar vectors in order to perform the order function (becuase it has to be a vector)
+temp_vector<- airquality[ , c("Temp")]
+solar_vector<- airquality[ , c("Solar.R")]
+#sort temp and solar vectors 
+temp_sorted<- temp_vector[order(-temp_vector)]
+solar_sorted<- solar_vector[order(solar_vector)]
+#bind sorted temp and solar vectors into a data frame
+sorted_df<- data.frame(temp_sorted, solar_sorted)
+#display only first 15 lines of new data frame
+head(sorted_df,15)
+
+#retry this one with the example from class (different than above)
+data(airquality)
+head(airquality)
+
+new_df_temp<- airquality[order(-airquality$Temp), ]
+new_df_solar<- airquality[order(airquality$Solar.R), ]
+new_df<- data.frame(new_df_temp, new_df_solar)
+new_df
+head(new_df,15)
+
+```
+
+#### Question 4
+
+* There are various ways to select a subset of observations from a data frame.
+
+* Consult your [R Reference Card](https://cran.r-project.org/doc/contrib/Baggott-refcard-v2.pdf), see `Data Selection and Manipulation` section.
+  * What operations can you use to select all observations where the temperature is 72. Give at least two different answers to this question
+
+
+```{r}
+# Write your answer here
+data(airquality)
+head(airquality)
+
+#1st way
+temp_sorted<- temp_sorted==72 
+new_temp<- temp_sorted
+filtered_new_temp<- temp_sorted[new_temp]
+
+#2nd way
+airquality[is.element(airquality$Temp, c(72)), ]
+
+```
+
+#### Question 6
+
+* You may have noticed when working with the `airqulity` data that some values show as `NA`
+ * `NA` stands for not available, or missing values.
+* A major part of data wrangling consists of cleaning missing values by either:
+  * Dropping the lines that have missing values
+   * Sometimes we can drop the column with missing values if the column is made of predominantly missing values
+  * Imputing the missing values, which uses educated guesses (or more complex algorithms) to fill the missing values
+  
+* Find and remove all rows that are missing values for the `Solar.R` or `Ozone` variables
+* Save the cleaned data to a new data frame called airquality_no_na
+  * How many lines have been removed?
+
+```{r}
+# First attempt on my own
+#data(airquality)
+#head(airquality)
+#create vectors for columns 
+#solar_vector<- airquality[ , c("Solar.R")]
+#ozone_vector<- airquality[ , c("Ozone")]
+#remove NAs from columns 
+#solar_no_na<- na.omit(solar_vector)
+#ozone_no_na<- na.omit(ozone_vector)
+#airquality_no_na<- data.frame(solar_no_na, ozone_no_na) #this doesn't work because they dont have a matching number of rows--ask about this#
+
+#solar now has 146 and ozone has 116, so solar is missing 7 and ozone is missing 37  
+
+#final attempt following example from class--avoided the issue I had above: 
+data(airquality)
+head(airquality)
+
+is.na(airquality$Solar.R & airquality$Ozone)
+airquality_no_na<- airquality[!is.na(airquality$Solar.R & airquality$Ozone), ]
+airquality_no_na
+
+#solar now has 146 and ozone has 116, so solar is missing 7 and ozone is missing 37 
+
+```
+
+#### Question 7
+* Let's use a different strategy and impute the missing value.
+  * replace the missing values for Solar.R using that month's average.
+  * Example:
+    * The missing value for line 6 should be replaced with the average for month 5.
+    * The missing value for line 97 should be replaced with the average for month 8.
+
+```{r}
+# Write your answer here
+data(airquality)
+head(airquality)
+
+#create average value for months with NA values (May and August)
+may_obs<- subset(airquality, Month == 5, "Solar.R")
+may_obs_no_na<- na.omit(may_obs)
+may_average<- mean(may_obs_no_na$Solar.R)
+
+aug_obs<- subset(airquality, Month == 8, "Solar.R")
+aug_obs_no_na<- na.omit(aug_obs)
+aug_average<- mean(aug_obs_no_na$Solar.R)
+
+#replace NAs for May and August with average values 
+may_obs[is.na(may_obs)] <- may_average
+aug_obs[is.na(aug_obs)] <- aug_average
+```
+
